@@ -1,8 +1,9 @@
 import { Canvas, Circle } from "@shopify/react-native-skia";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
-import { useSharedValue } from "react-native-reanimated";
+import { useFrameCallback, useSharedValue } from "react-native-reanimated";
 import { BALL_COLOR, RADIUS } from "./constants";
+import { animate, createBouncingExample } from "./logic";
 
 export default function App() {
   const circleObject = {
@@ -16,6 +17,15 @@ export default function App() {
     vx: 0,
     vy: 0,
   };
+  createBouncingExample(circleObject);
+
+  useFrameCallback((frameInfo) => {
+    if (!frameInfo.timeSincePreviousFrame) {
+      return;
+    }
+    animate([circleObject], frameInfo.timeSincePreviousFrame, 0);
+  });
+
   return (
     <View style={styles.container}>
       <Canvas style={{ flex: 1 }}>
