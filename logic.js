@@ -1,4 +1,4 @@
-import { MAX_SPEED, RADIUS } from "./constants";
+import { height, MAX_SPEED, RADIUS, width } from "./constants";
 
 export const createBouncingExample = (circleObject) => {
   "worklet";
@@ -9,6 +9,34 @@ export const createBouncingExample = (circleObject) => {
   circleObject.ay = 1;
   circleObject.vx = 0;
   circleObject.vy = 0;
+};
+
+export const resolveWallCollision = (circleObject) => {
+  "worklet";
+  // Right wall Collision
+  if (circleObject.x.value + circleObject.r > width) {
+    circleObject.x.value = width - circleObject.r * 2;
+    circleObject.vx = -circleObject.vx;
+    circleObject.ax = -circleObject.ax;
+  }
+  // Bottom wall Collision
+  else if (circleObject.y.value + circleObject.r > height) {
+    circleObject.y.value = height - circleObject.r * 2;
+    circleObject.vy = -circleObject.vy;
+    circleObject.ay = -circleObject.ay;
+  }
+  // Left wall Collision
+  else if (circleObject.x.value - circleObject.r < 0) {
+    circleObject.x.value = circleObject.r * 2;
+    circleObject.vx = -circleObject.vx;
+    circleObject.ax = -circleObject.ax;
+  }
+  // Top wall Collision
+  else if (circleObject.y.value - circleObject.r < 0) {
+    circleObject.y.value = circleObject.r * 2;
+    circleObject.vy = -circleObject.vy;
+    circleObject.ay = -circleObject.ay;
+  }
 };
 
 const move = (object, dt) => {
@@ -38,6 +66,11 @@ export const animate = (objects, timeSincePreviousFrame, brickCount) => {
   for (const o of objects) {
     if (o.type === "Circle") {
       move(o, 0.15);
+    }
+  }
+  for (const o of objects) {
+    if (o.type === "Circle") {
+      resolveWallCollision(o);
     }
   }
 };
