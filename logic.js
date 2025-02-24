@@ -65,7 +65,7 @@ export const animate = (objects, timeSincePreviousFrame, brickCount) => {
   "worklet";
   for (const o of objects) {
     if (o.type === "Circle") {
-      move(o, 0.15);
+      move(o, (0.15 / 16) * timeSincePreviousFrame);
     }
   }
   for (const o of objects) {
