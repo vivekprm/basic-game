@@ -301,7 +301,7 @@ const styles = StyleSheet.create({
 
 However we see as soon as we move the paddle everything speeds up. We can check this by adding log in ```useFrameCallback``` callback. The reason in moving the paddle causes ```useFrameCallback``` callback to get called lot more frequently. So we need to change ```animate``` function in our logic.
 
-````js
+```js
 export const animate = (objects, timeSincePreviousFrame, brickCount) => {
   "worklet";
   for (const o of objects) {
@@ -316,4 +316,9 @@ export const animate = (objects, timeSincePreviousFrame, brickCount) => {
   }
 };
 ```
+
+# Object Collisions
+Now let's see how we can make collision work with Paddle.
+
+https://www.jeffreythompson.org/collision-detection/circle-rect.php
 
